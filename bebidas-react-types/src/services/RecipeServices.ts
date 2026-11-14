@@ -1,6 +1,6 @@
 import axios from "axios";
-import { CategoriesApiResponseSchema, DrinksAPIResponse } from "../utils/recipes-schema";
-import type { SearchFilter } from "../interfaces";
+import { CategoriesApiResponseSchema, DrinksAPIResponse, RecipeAPIResponseSchema } from "../utils/recipes-schema";
+import type { Drink, SearchFilter } from "../interfaces";
 
 export async function getCategories() {
     try {
@@ -26,6 +26,22 @@ export async function getRecipies(filters: SearchFilter) {
         if (!result.success) {
             console.error("Error parsing categories:", result.error);
             //     return { drinks: [] }; // ✅ Retorna la estructura correcta en lugar de un array vacío
+        }
+        return result.data;
+       
+    } catch (error) {
+       console.error("Error fetching categories:", error);
+    }
+}
+
+export async function getDrinckDetails(id: Drink['idDrink']) {
+    try {
+        const url = `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`;
+        const {data} = await axios.get(url);
+        const result = RecipeAPIResponseSchema.safeParse(data.drinks[0]);
+        if (!result.success) {
+            console.error("Error parsing categories:", result.error);
+            //     //     return { drinks: [] }; // ✅ Retorna la estructura correcta en lugar de un array vacío
         }
         return result.data;
        
