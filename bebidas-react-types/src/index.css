@@ -1,1 +1,5 @@
 @import 'tailwindcss';
+
+@theme {
+  --background-image-hero-pattern: url('/public/bg.jpg');
+}
